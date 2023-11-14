@@ -1,5 +1,6 @@
-import { verify } from 'jsonwebtoken';
+import pkg from 'jsonwebtoken';
 import { UNAUTHORIZED } from '../constants/httpStatus.js';
+const { verify } = pkg;
 
 export default (req, res, next) => {
   const token = req.headers.access_token;
