@@ -10,6 +10,10 @@ import {
   search,
 } from '../../services/foodService';
 import NotFound from '../../components/NotFound/NotFound';
+import ReactPaginate from 'react-paginate';
+import { useState } from 'react';
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.css';
 
 const initialState = { foods: [], tags: [] };
 
@@ -28,6 +32,14 @@ export default function HomePage() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { foods, tags } = state;
   const { searchTerm, tag } = useParams();
+  const [page,setPage]=useState(0);
+  const handlePageClick=(data)=>{
+    setPage(data.selected);
+  }
+  const getAll = async () =>{
+    const { data } = await axios.get(`/api/foods?page=${page}`);
+    return data;
+  };
 
   useEffect(() => {
     getAllTags().then(tags => dispatch({ type: 'TAGS_LOADED', payload: tags }));
@@ -39,7 +51,7 @@ export default function HomePage() {
       : getAll();
 
     loadFoods.then(foods => dispatch({ type: 'FOODS_LOADED', payload: foods }));
-  }, [searchTerm, tag]);
+  }, [searchTerm, tag,page]);
 
   return (
     <>
@@ -47,6 +59,25 @@ export default function HomePage() {
       <Tags tags={tags} />
       {foods.length === 0 && <NotFound linkText="Reset Search" />}
       <Thumbnails foods={foods} />
+      <ReactPaginate
+       containerClassName='pagination justify-content-center'
+       pageClassName='page-item'
+       pageLinkClassName='page-link'
+        breakLabel="..."
+        nextLabel="next"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={1000}
+        previousClassName='page-item'
+        previousLinkClassName='page-link'
+        nextClassName='page-item'
+        nextLinkClassName='page-link'
+        breakClassName='page-item'
+        breakLinkClassName='page-link'
+        previousLabel="previous"
+        renderOnZeroPageCount={null}
+        activeClassName='active'
+      />
     </>
   );
 }

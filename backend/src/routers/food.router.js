@@ -7,7 +7,9 @@ const router = Router();
 router.get(
   '/',
   handler(async (req, res) => {
-    const foods = await FoodModel.find({});
+    const PAGE_SIZE= 20;
+    const page =parseInt(req.query.page || "0");
+    const foods = await FoodModel.find({}).limit(PAGE_SIZE).skip(PAGE_SIZE * page);
     res.send(foods);
   })
 );
