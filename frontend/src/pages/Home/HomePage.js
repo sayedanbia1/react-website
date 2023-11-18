@@ -67,7 +67,7 @@ export default function HomePage() {
         nextLabel="next"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
-        pageCount={1000}
+        pageCount={2518}
         previousClassName='page-item'
         previousLinkClassName='page-link'
         nextClassName='page-item'
