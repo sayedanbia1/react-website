@@ -6,6 +6,7 @@
 
 .header a {
   color: #af1313;
+  text-decoration: none;
 }
 
 .header a:hover {
